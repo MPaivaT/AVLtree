@@ -3,9 +3,8 @@
 
 #include "Node.h"
 #include <utility>
-#define tpt template<typename T>
 
-tpt
+template<typename T>
 class AVLtree {
     private:
     
@@ -28,6 +27,8 @@ class AVLtree {
 
     static bool InsertR(Node<T>** R,int k,Node<T>* P);
 
+    static bool popR(Node<T>** R,int k);
+
     static Node<T>* SearchR(Node<T>* R,int k);
     
     void imprimir_InOrderR(Node<T>* R);
@@ -38,6 +39,8 @@ class AVLtree {
     AVLtree();
 
     bool Insert(int k,T N);
+
+    bool pop(int k);
 
     T Search(int k);
 
@@ -53,7 +56,7 @@ class AVLtree {
 // Implementação
 
 
-tpt
+template<typename T>
     void AVLtree<T>::DestroyR(Node<T>* R){
         if(!R) return;
         AVLtree::DestroyR(R->left);
@@ -61,12 +64,12 @@ tpt
         delete R;
     }
     //auxiliares rotações etc
-    tpt
+    template<typename T>
     Node<T>* AVLtree<T>::Min_N(Node<T>* N){
         if(!N->left) return N;
         AVLtree::Min_N(N->left);
     }
-    tpt
+    template<typename T>
     void AVLtree<T>::RSD(Node<T>** r){
         Node<T>* a = *r;
         Node<T>* b = a ->left;
@@ -75,7 +78,7 @@ tpt
         b->right = a;
         a->fb = b->fb = 0;
     }
-    tpt
+    template<typename T>
     void AVLtree<T>::RSE(Node<T>** r){
         Node<T>* a = *r;
         Node<T>* b = a ->right;
@@ -84,7 +87,7 @@ tpt
         b->left = a;
         a->fb = b->fb = 0;
     }
-    tpt
+    template<typename T>
     void AVLtree<T>::RDD(Node<T>** r){
         Node<T>* a = *r;
         Node<T>* b = a->left;
@@ -109,7 +112,7 @@ tpt
         }
         c->fb = 0;
     }
-    tpt
+    template<typename T>
     void AVLtree<T>::RDE(Node<T>** r){
         Node<T>* a = *r;
         Node<T>* b = a->right;
@@ -134,7 +137,7 @@ tpt
         }
         c->fb = 0;
     }
-    tpt
+    template<typename T>
     bool AVLtree<T>::InsertR(Node<T>** R,int k,Node<T>* P){
         if(!*R){
             *R = P;
@@ -167,7 +170,13 @@ tpt
             AVLtree<T>::RDE(R);
             return false;
     }
-    tpt
+
+    template<typename T>
+    bool popR(Node<T>** R,int k){
+
+    }
+
+    template<typename T>
     Node<T>* AVLtree<T>::SearchR(Node<T>* R,int k){
         if(!R) return nullptr;
         if(k<r->key) return AVLtree<T>::SearchR(R->left,k);
@@ -175,7 +184,7 @@ tpt
         return AVLtree<T>::SearchR(R->right,R,k);
     }
     
-    tpt
+    template<typename T>
     void AVLtree<T>::imprimir_InOrderR(Node<T>* R){
         if(!R) return;
         imprimir_InOrderR(R->left);
@@ -183,37 +192,47 @@ tpt
         imprimir_InOrderR(R->right);
     }
     
+    //Publicas
+
 
     // contrutor
-    tpt
+    template<typename T>
     AVLtree<T>::AVLtree(){
         root = nullptr;
     }
-    tpt
+    template<typename T>
     bool AVLtree<T>::Insert(int k,T N){
         Node<T>* P = new Node<T>(k,N);
         AVLtree<T>::InsertR(root,k,P);
         return Search(k)==N;
     }
-    tpt
-    T AVLtree<T>::Search(int k){
-        Node<T>* N = AVLtree<T>::SearchR(root,k);
-        return N->element;
+
+    template<typename T>
+    bool AVLtree<T>::pop(int k){
+        AVLtree<T>::popR(&root,k);
+        return !AVLtree<T>::Search(k);
     }
 
-    tpt
+    template<typename T>
+    T AVLtree<T>::Search(int k){
+        Node<T>* N = AVLtree<T>::SearchR(root,k);
+        if(!N) return 0;
+        return N->get_element();
+    }
+
+    template<typename T>
     void AVLtree<T>::imprimir_InOrder(){
         imprimir_InOrderR(root);
     }
     
     
-    tpt
+    template<typename T>
     void AVLtree<T>::Destroy(){ //função chama destuir recursivo
         DestroyR(root);
         root = nullptr;
     }
     // Destrutor chama Destroy arvore
-    tpt
+    template<typename T>
     AVLtree<T>::~AVLtree(){
         AVLtree<T>:DestroyR(root);
     }
