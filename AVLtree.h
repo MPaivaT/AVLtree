@@ -12,9 +12,49 @@ class AVLtree {
     Node<T>* root;
     int Nel;
     
-    // destroi a arvore recursivamente
-    tpt
-    static void AVLtree<T>::DestroyR(Node<T>* R){
+    static void DestroyR(Node<T>* R);
+
+    //auxiliares rotações etc
+
+    static Node<T>* Min_N(Node<T>* N);
+
+    static void RSD(Node<T>** r);
+
+    static void RSE(Node<T>** r);
+
+    static void RDD(Node<T>** r);
+
+    static void RDE(Node<T>** r);
+
+    static bool InsertR(Node<T>** R,int k,Node<T>* P);
+
+    static Node<T>* SearchR(Node<T>* R,int k);
+    
+    void imprimir_InOrderR(Node<T>* R);
+    
+    
+    public:
+
+    AVLtree();
+
+    bool Insert(int k,T N);
+
+    T Search(int k);
+
+    void imprimir_InOrder();
+    
+    
+    void Destroy();
+
+    ~AVLtree();
+};
+
+
+// Implementação
+
+
+tpt
+    void AVLtree<T>::DestroyR(Node<T>* R){
         if(!R) return;
         AVLtree::DestroyR(R->left);
         AVLtree::DestroyR(R->right);
@@ -22,12 +62,12 @@ class AVLtree {
     }
     //auxiliares rotações etc
     tpt
-    static Node<T>* AVLtree<T>::Min_N(Node<T>* N){
+    Node<T>* AVLtree<T>::Min_N(Node<T>* N){
         if(!N->left) return N;
         AVLtree::Min_N(N->left);
     }
     tpt
-    static void AVLtree<T>::RSD(Node<T>** r){
+    void AVLtree<T>::RSD(Node<T>** r){
         Node<T>* a = *r;
         Node<T>* b = a ->left;
         *r = b;
@@ -36,7 +76,7 @@ class AVLtree {
         a->fb = b->fb = 0;
     }
     tpt
-    static void AVLtree<T>::RSE(Node<T>** r){
+    void AVLtree<T>::RSE(Node<T>** r){
         Node<T>* a = *r;
         Node<T>* b = a ->right;
         *r = b;
@@ -45,7 +85,7 @@ class AVLtree {
         a->fb = b->fb = 0;
     }
     tpt
-    static void AVLtree<T>::RDD(Node<T>** r){
+    void AVLtree<T>::RDD(Node<T>** r){
         Node<T>* a = *r;
         Node<T>* b = a->left;
         Node<T>* c = b->right;
@@ -70,7 +110,7 @@ class AVLtree {
         c->fb = 0;
     }
     tpt
-    static void AVLtree<T>::RDE(Node<T>** r){
+    void AVLtree<T>::RDE(Node<T>** r){
         Node<T>* a = *r;
         Node<T>* b = a->right;
         Node<T>* c = b->left;
@@ -95,7 +135,7 @@ class AVLtree {
         c->fb = 0;
     }
     tpt
-    static bool AVLtree<T>::InsertR(Node<T>** R,int k,Node<T>* P){
+    bool AVLtree<T>::InsertR(Node<T>** R,int k,Node<T>* P){
         if(!*R){
             *R = P;
             return true;
@@ -128,7 +168,7 @@ class AVLtree {
             return false;
     }
     tpt
-    static Node<T>* AVLtree<T>::SearchR(Node<T>* R,int k){
+    Node<T>* AVLtree<T>::SearchR(Node<T>* R,int k){
         if(!R) return nullptr;
         if(k<r->key) return AVLtree<T>::SearchR(R->left,k);
         if(R->key == k) return R;
@@ -143,8 +183,7 @@ class AVLtree {
         imprimir_InOrderR(R->right);
     }
     
-    
-    public:
+
     // contrutor
     tpt
     AVLtree<T>::AVLtree(){
@@ -178,7 +217,6 @@ class AVLtree {
     AVLtree<T>::~AVLtree(){
         AVLtree<T>:DestroyR(root);
     }
-};
 
 
 
