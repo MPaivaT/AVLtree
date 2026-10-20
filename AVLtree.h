@@ -27,6 +27,8 @@ class AVLtree {
 
     static bool InsertR(Node<T>** R,int k,Node<T>* P);
 
+    static bool direx(Node<T>** R,int k);
+
     static bool popR(Node<T>** R,int k);
 
     static Node<T>* SearchR(Node<T>* R,int k);
@@ -76,7 +78,13 @@ template<typename T>
         *r = b;
         a->left = b->right;
         b->right = a;
-        a->fb = b->fb = 0;
+        if(b->fb==-1){
+            a->fb = b->fb = 0;
+        }
+        else{
+            a->fb = -1;
+            b->fb = 1;
+        }
     }
     template<typename T>
     void AVLtree<T>::RSE(Node<T>** r){
@@ -85,7 +93,13 @@ template<typename T>
         *r = b;
         a->right = b->left;
         b->left = a;
-        a->fb = b->fb = 0;
+        if(b->fb==-1){
+            a->fb = b->fb = 0;
+        }
+        else{
+            a->fb = 1;
+            b->fb = -1;
+        }
     }
     template<typename T>
     void AVLtree<T>::RDD(Node<T>** r){
@@ -132,7 +146,7 @@ template<typename T>
                 a->fb = 1;
             }
             else{
-                c->fb = b->fb = a->fb = 0;
+                b->fb = a->fb = 0;
             }
         }
         c->fb = 0;
@@ -172,7 +186,72 @@ template<typename T>
     }
 
     template<typename T>
+    bool AVLtree<T>::direx(Node<T>** R,int k){
+        if(!AVLtree<T>::popR(&((*R)->right),k)){return false;}
+            //diminiu na direita
+            if((*R)->fb>-1){
+                (*R)->fb++;
+                return !((*R)->fb);
+            }
+            //tem de rotacionar pra direita
+            if((*R)->right->fb==-1){
+                AVLtree<T>::RSD(R);
+                return true;
+            }
+            if((*R)->right->fb==0){
+                AVLtree<T>::RSD(R);
+                return false;
+            }
+            //n é simples é dupla
+            RDD(R);
+            return true;
+    }
+
+    template<typename T>
     bool popR(Node<T>** R,int k){
+        if(!*R){
+            return false;
+        }
+        if(k<(*R)->key){
+            if(!AVLtree<T>::popR(&((*R)->left),k)){return false;}
+            //diminiu na esquerda
+            if((*R)->fb<1){
+                (*R)->fb--;
+                return !((*R)->fb);
+            }
+            //tem de rotacionar pra esquerda
+            if((*R)->right->fb==1){
+                AVLtree<T>::RSE(R);
+                return true;
+            }
+            if((*R)->right->fb==0){
+                AVLtree<T>::RSE(R);
+                return false;
+            }
+            //n é simpes então é dupla
+            RDE(R);
+            return true;
+        }
+        if(k == (*R)->key){
+            if(!(*R)->left){
+                Node<T> temp = *R;
+                *R = temp->right;
+                delete temp;
+                return true;
+            }
+            //tem filho na esquerda
+            if(!(*R)->right){
+                Node<T>* temp = *R;
+                *R = temp->left;
+                delete temp;
+                return true;
+            }
+            Node<T>* mini = AVLtree<T>::Min_N((*R)->right);
+            swap(mini->key,(*R)->key);
+            swap(mini->element,(*R)->element);
+            return AVLtree<T>::direx(R,k);
+        }
+        return direx(R,k);
 
     }
 
@@ -217,7 +296,7 @@ template<typename T>
     T AVLtree<T>::Search(int k){
         Node<T>* N = AVLtree<T>::SearchR(root,k);
         if(!N) return 0;
-        return N->get_element();
+        return N->element;
     }
 
     template<typename T>
@@ -236,9 +315,6 @@ template<typename T>
     AVLtree<T>::~AVLtree(){
         AVLtree<T>:DestroyR(root);
     }
-
-
-
 
 
 

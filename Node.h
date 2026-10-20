@@ -4,16 +4,14 @@
 
 template <typename T> 
 class Node {
-    private:
+    public:
     T element;
     int key;
     int fb;
     Node* left;
     Node* right;    
-    public:
     Node<T>();
     Node<T>(int k,T el);
-    T get_element() const;
     ~Node<T>();
 };
 
@@ -29,9 +27,6 @@ Node<T>::Node(int k,T el){
     left = right = nullptr;
     fb = 0;
 }
-
-template<typename T>
-T Node<T>::get_element() const{return element;}
 
 template<typename T>
 Node<T>::Node(){}
