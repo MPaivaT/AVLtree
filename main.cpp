@@ -8,10 +8,10 @@ int main(){
     arv.Insert(3,40);
     arv.Insert(4,90);
     arv.Insert(1,8);
-    arv.imprimir_InOrder();
+    arv.print_InOrder();
     cout << arv.Search(1) << '\n';
     arv.pop(2);
-    arv.imprimir_InOrder();
+    arv.print_InOrder();
 
     return 0;
 }

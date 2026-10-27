@@ -1,6 +1,13 @@
 #ifndef AVLTREE_H
 #define AVLTREE_H
 
+/*
+    Implementation of AVL tree made of Murilo Paiva Tavares,
+    student of Computer Science in Pontifícia Universidade Católica de Goiás
+*/
+
+
+
 #include "Node.h"
 #include <utility>
 #include <iostream>
@@ -35,8 +42,14 @@ class AVLtree {
 
     static Node<T>* SearchR(Node<T>* R,int k);
     
-    void imprimir_InOrderR(Node<T>* R);
+    template<typename Func>
+    static void InOrderR(Node<T>* R,Func act);
     
+    template<typename Func>
+    static void PreOrderR(Node<T>* R,Func act);
+
+    template<typename Func>
+    static void PosOrderR(Node<T>* R,Func act);
     
     public:
 
@@ -48,7 +61,7 @@ class AVLtree {
 
     T Search(int k);
 
-    void imprimir_InOrder();
+    void print_Order(int ord);
     
     
     void Destroy();
@@ -71,7 +84,7 @@ template<typename T>
     template<typename T>
     Node<T>* AVLtree<T>::Min_N(Node<T>* N){
         if(!N->left) return N;
-        AVLtree::Min_N(N->left);
+        return AVLtree::Min_N(N->left);
     }
 
     template<typename T>
@@ -97,7 +110,7 @@ template<typename T>
         *r = b;
         a->right = b->left;
         b->left = a;
-        if(b->fb==-1){
+        if(b->fb==1){
             a->fb = b->fb = 0;
         }
         else{
@@ -122,7 +135,7 @@ template<typename T>
         }
         else{
             if(c->fb==1){
-                b->fb = 1;
+                b->fb = -1;
                 a->fb = 0;
             }
             else{
@@ -149,7 +162,7 @@ template<typename T>
         else{
             if(c->fb==1){
                 b->fb = 0;
-                a->fb = 1;
+                a->fb = -1;
             }
             else{
                 b->fb = a->fb = 0;
@@ -196,16 +209,16 @@ template<typename T>
     bool AVLtree<T>::direx(Node<T>** R,int k){
         if(!AVLtree<T>::popR(&((*R)->right),k)){return false;}
             //diminiu na direita
-            if((*R)->fb>-1){
-                (*R)->fb++;
+            if((*R)->fb>=0){
+                (*R)->fb--;
                 return !((*R)->fb);
             }
             //tem de rotacionar pra direita
-            if((*R)->right->fb==-1){
+            if((*R)->left->fb==-1){
                 AVLtree<T>::RSD(R);
                 return true;
             }
-            if((*R)->right->fb==0){
+            if((*R)->left->fb==0){
                 AVLtree<T>::RSD(R);
                 return false;
             }
@@ -271,11 +284,31 @@ template<typename T>
     }
     
     template<typename T>
-    void AVLtree<T>::imprimir_InOrderR(Node<T>* R){
+    template<typename Func>
+    void AVLtree<T>::InOrderR(Node<T>* R,Func act){
         if(!R) return;
-        imprimir_InOrderR(R->left);
-        cout << R->element << '\n';
-        imprimir_InOrderR(R->right);
+        InOrderR(R->left,act);
+//        cout << R->element << '\n';
+        act(R->element);
+        InOrderR(R->right,act);
+    }
+
+    template<typename T>
+    template<typename Func>
+    void AVLtree<T>::PosOrderR(Node<T>* R,Func act){
+        if(!R) return;
+        PosOrderR(R->left,act);
+        PosOrderR(R->right,act);
+        act(R->element);
+    }
+
+    template<typename T>
+    template<typename Func>
+    void AVLtree<T>::PreOrderR(Node<T>* R,Func act){
+        if(!R) return;
+        act(R->element);
+        PreOrderR(R->left,act);
+        PreOrderR(R->right,act);
     }
     
     //Publicas
@@ -310,8 +343,11 @@ template<typename T>
     }
 
     template<typename T>
-    void AVLtree<T>::imprimir_InOrder(){
-        imprimir_InOrderR(root);
+    void AVLtree<T>::print_Order(int ord){
+        auto f = [](T el){cout << el << '\n';};
+        if(ord<0) return PreOrderR(root,f);
+        if(ord>0) return PosOrderR(root,f);
+        InOrderR(root,f);
     }
     
     
