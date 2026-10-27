@@ -157,7 +157,7 @@ template<typename T>
         }
         c->fb = 0;
     }
-    
+
     template<typename T>
     bool AVLtree<T>::InsertR(Node<T>** R,int k,Node<T>* P){
         if(!*R){
@@ -215,7 +215,7 @@ template<typename T>
     }
 
     template<typename T>
-    bool popR(Node<T>** R,int k){
+    bool AVLtree<T>::popR(Node<T>** R,int k){
         if(!*R){
             return false;
         }
@@ -241,7 +241,7 @@ template<typename T>
         }
         if(k == (*R)->key){
             if(!(*R)->left){
-                Node<T> temp = *R;
+                Node<T>* temp = *R;
                 *R = temp->right;
                 delete temp;
                 return true;
