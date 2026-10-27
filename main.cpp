@@ -1,4 +1,3 @@
-#include <iostream>
 #include "AVLtree.h"
 
 using namespace std;
@@ -11,6 +10,8 @@ int main(){
     arv.Insert(90,8);
     arv.imprimir_InOrder();
     cout << arv.Search(90) << '\n';
+    arv.pop(2);
+    arv.imprimir_InOrder();
 
 
     return 0;

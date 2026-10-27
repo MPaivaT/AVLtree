@@ -3,6 +3,8 @@
 
 #include "Node.h"
 #include <utility>
+#include <iostream>
+using namespace std;
 
 template<typename T>
 class AVLtree {
@@ -71,6 +73,7 @@ template<typename T>
         if(!N->left) return N;
         AVLtree::Min_N(N->left);
     }
+
     template<typename T>
     void AVLtree<T>::RSD(Node<T>** r){
         Node<T>* a = *r;
@@ -86,6 +89,7 @@ template<typename T>
             b->fb = 1;
         }
     }
+
     template<typename T>
     void AVLtree<T>::RSE(Node<T>** r){
         Node<T>* a = *r;
@@ -101,6 +105,7 @@ template<typename T>
             b->fb = -1;
         }
     }
+
     template<typename T>
     void AVLtree<T>::RDD(Node<T>** r){
         Node<T>* a = *r;
@@ -126,6 +131,7 @@ template<typename T>
         }
         c->fb = 0;
     }
+
     template<typename T>
     void AVLtree<T>::RDE(Node<T>** r){
         Node<T>* a = *r;
@@ -151,6 +157,7 @@ template<typename T>
         }
         c->fb = 0;
     }
+    
     template<typename T>
     bool AVLtree<T>::InsertR(Node<T>** R,int k,Node<T>* P){
         if(!*R){
@@ -158,7 +165,7 @@ template<typename T>
             return true;
         }
         if(k < (*R)->key){
-            if(!AVLtree<T>::Insert(&((*R)->left),k,P)) return false;
+            if(!AVLtree<T>::InsertR(&((*R)->left),k,P)) return false;
             
             if((*R)->fb>=0){
                 return --((*R)->fb);
@@ -171,7 +178,7 @@ template<typename T>
             AVLtree<T>::RDD(R);
             return false;
         }
-        if(!AVLtree<T>::Insert(&((*R)->right),k,P)) return false;
+        if(!AVLtree<T>::InsertR(&((*R)->right),k,P)) return false;
             
             if((*R)->fb<=0){
                 return ++((*R)->fb);
@@ -258,9 +265,9 @@ template<typename T>
     template<typename T>
     Node<T>* AVLtree<T>::SearchR(Node<T>* R,int k){
         if(!R) return nullptr;
-        if(k<r->key) return AVLtree<T>::SearchR(R->left,k);
+        if(k<R->key) return AVLtree<T>::SearchR(R->left,k);
         if(R->key == k) return R;
-        return AVLtree<T>::SearchR(R->right,R,k);
+        return AVLtree<T>::SearchR(R->right,k);
     }
     
     template<typename T>
@@ -279,10 +286,13 @@ template<typename T>
     AVLtree<T>::AVLtree(){
         root = nullptr;
     }
+    
     template<typename T>
     bool AVLtree<T>::Insert(int k,T N){
-        Node<T>* P = new Node<T>(k,N);
-        AVLtree<T>::InsertR(root,k,P);
+        Node<T>* P = new Node<T>;
+        P->element = N;
+        P->key = k;
+        AVLtree<T>::InsertR(&root,k,P);
         return Search(k)==N;
     }
 
@@ -313,7 +323,7 @@ template<typename T>
     // Destrutor chama Destroy arvore
     template<typename T>
     AVLtree<T>::~AVLtree(){
-        AVLtree<T>:DestroyR(root);
+        AVLtree<T>::DestroyR(root);
     }
 
 
