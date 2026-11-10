@@ -8,10 +8,10 @@ int main(){
     arv.Insert(3,40);
     arv.Insert(4,90);
     arv.Insert(1,8);
-    arv.print_InOrder();
-    cout << arv.Search(1) << '\n';
-    arv.pop(2);
-    arv.print_InOrder();
+    if(arv.pop(1))cout << "Deu Certo\n";
+    arv.print_Order(0);
+    arv.foreach([](int& x){x = x/10;});
+    arv.print_Order(0);
 
     return 0;
 }

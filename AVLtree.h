@@ -63,6 +63,8 @@ class AVLtree {
 
     void print_Order(int ord);
     
+    template<typename Func>
+    void foreach(Func act);
     
     void Destroy();
 
@@ -345,11 +347,16 @@ template<typename T>
     template<typename T>
     void AVLtree<T>::print_Order(int ord){
         auto f = [](T el){cout << el << '\n';};
-        if(ord<0) return PreOrderR(root,f);
-        if(ord>0) return PosOrderR(root,f);
-        InOrderR(root,f);
+        if(ord<0) return AVLtree<T>::PreOrderR(root,f);
+        if(ord>0) return AVLtree<T>::PosOrderR(root,f);
+        AVLtree<T>::InOrderR(root,f);
     }
     
+    template<typename T>
+    template<typename Func>
+    void AVLtree<T>::foreach(Func act){
+        AVLtree<T>::InOrderR(root,act);
+    }
     
     template<typename T>
     void AVLtree<T>::Destroy(){ //função chama destuir recursivo
