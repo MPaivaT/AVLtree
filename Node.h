@@ -10,8 +10,8 @@ class Node {
     int fb;
     Node* left;
     Node* right;    
-    Node<T>();
-    ~Node<T>();
+    Node();
+    ~Node();
 };
 
 template<typename T>

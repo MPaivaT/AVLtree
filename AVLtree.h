@@ -65,6 +65,7 @@ class AVLtree {
     
     template<typename Func>
     void foreach(Func act);
+    //chama a Função InOrderR e passa como parametro root(raiz da arvore) e act(função recebida na chamada da função foreach)
     
     void Destroy();
 

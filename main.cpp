@@ -8,9 +8,9 @@ int main(){
     arv.Insert(3,40);
     arv.Insert(4,90);
     arv.Insert(1,8);
-    if(arv.pop(1))cout << "Deu Certo\n";
+//    if(arv.pop(1))cout << "Deu Certo\n";
     arv.print_Order(0);
-    arv.foreach([](int& x){x = x/10;});
+    arv.foreach([](int& x){if(x>10)x = x/10;else x+=10;});
     arv.print_Order(0);
 
     return 0;
